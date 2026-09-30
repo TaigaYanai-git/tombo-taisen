@@ -4373,7 +4373,7 @@ const Net=(()=>{
 /* ================= battle music: the user's own songs (instrumental mixes) ================= */
 const BGM=(()=>{
   // intro plays once, then [loopStart, loopEnd) repeats; loop points sit on bar lines where the music matches
-  const SONGS=[{url:'bgm/rhythm_prism.mp3',gain:1,loopStart:2.666667,loopEnd:88}]; // add more remixed songs here
+  const SONGS=[{url:'rhythm_prism.mp3',gain:1,loopStart:2.666667,loopEnd:88}]; // add more remixed songs here
   const LEVEL={off:0,low:.12,mid:.2,high:.32};
   const bufs=new Map();let out=null,src=null,cur=null,last=-1,t0=0,off=0,playing=false,fading=false;
   const target=()=>muted?0:(LEVEL[cfg.bgm]??LEVEL.mid);
@@ -4407,7 +4407,7 @@ const BGM=(()=>{
 
 /* ================= menu music: a calm lounge-jazz loop for the home, shop / gacha and result screens ================= */
 const MenuBGM=(()=>{
-  const URL='bgm/lounge_jazz.mp3',PAD=4*60/84,LEN=16*4*60/84; // one bar of pre/post-roll around a 16-bar loop
+  const URL='lounge_jazz.mp3',PAD=4*60/84,LEN=16*4*60/84; // one bar of pre/post-roll around a 16-bar loop
   let buf=null,src=null,out=null,loading=null,on=false;
   const level=()=>muted?0:(({off:0,low:.12,mid:.2,high:.32})[cfg.bgm]??.2)*1.15;
   function load(){if(!loading)loading=fetch(URL).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((res,rej)=>AC.decodeAudioData(a,res,rej))).then(b=>{buf=b;return b}).catch(()=>null);return loading}
