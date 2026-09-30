@@ -43,6 +43,7 @@
   --num:'Chakra Petch','Zen Kaku Gothic New',system-ui,sans-serif;
 }
 [hidden]{display:none!important}
+#menu .col,#shop .col{touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 html,body{height:100%;background:var(--bg);color:var(--ink);overflow:hidden}
 body{font-family:var(--body);font-size:14px;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
 #game{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
@@ -200,6 +201,12 @@ body.touch .rbox{bottom:12px;left:40%}
 .taken{position:absolute;left:50%;top:62%;font-family:var(--num);font-weight:700;font-size:46px;color:var(--bad);text-shadow:0 0 14px rgba(255,79,94,.9),0 2px 0 #000;animation:tk 1.1s ease-out forwards;white-space:nowrap}
 .taken small{display:block;font-family:var(--body);font-size:13px;font-weight:700;text-align:center;color:#ffd0d6}
 @keyframes tk{0%{transform:translate(-50%,-50%) scale(1.5);opacity:1}70%{opacity:1}100%{transform:translate(-50%,-160%) scale(1);opacity:0}}
+#sndHint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;pointer-events:none;font-family:var(--body);font-size:13px;color:#fff;background:rgba(7,11,26,.85);border:1px solid var(--cy);padding:6px 14px;box-shadow:0 0 12px rgba(63,242,255,.4);animation:sndp 1.6s ease-in-out infinite alternate}@keyframes sndp{to{opacity:.55}}
+#rotate{display:none;position:fixed;inset:0;z-index:300;background:radial-gradient(circle at 50% 45%,#0c1433,#04060d 70%);flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;color:#fff}
+#rotate .ph{width:54px;height:92px;border:3px solid var(--cy);border-radius:10px;box-shadow:0 0 18px var(--cy);animation:rotph 2.2s ease-in-out infinite}
+#rotate b{font-family:var(--disp);font-weight:400;font-size:20px;letter-spacing:.08em;color:var(--cy)}#rotate small{font-size:12px;color:var(--dim);line-height:1.6;white-space:pre-line}
+@keyframes rotph{0%,20%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+@media (orientation:portrait){body.touch #rotate{display:flex}}
 #toast{position:absolute;left:50%;top:26%;transform:translateX(-50%);font-family:var(--disp);font-size:28px;letter-spacing:.15em;text-align:center;text-shadow:0 0 16px var(--c,var(--cy));color:#fff;opacity:0;transition:opacity .2s}
 #toast.show{opacity:1}
 #toast small{display:block;font-size:13px;font-family:var(--body);letter-spacing:.1em;color:var(--dim)}
@@ -336,11 +343,16 @@ body.touch .rbox{bottom:12px;left:40%}
 .rank span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .seg button b{overflow:hidden;text-overflow:ellipsis;max-width:100%}
 
+@media (max-width:860px) and (max-height:520px) and (orientation:landscape){
+  #menu,#shop{display:grid!important;grid-template-columns:1fr minmax(300px,54%);gap:14px;padding:10px 14px;pointer-events:none!important;overflow:visible!important;background:linear-gradient(90deg,rgba(4,6,13,0) 30%,rgba(4,6,13,.6))!important}
+  .col{max-height:calc(100vh - 20px)!important;overflow-y:auto!important;margin-top:0!important;padding-bottom:10px!important}
+  .brand h1{font-size:40px}
+}
 @media (max-width:860px){
   .shopL{gap:10px}
   .pgrid{grid-template-columns:repeat(3,1fr)}
   .btns.three{grid-template-columns:1fr}
-  #menu,#shop{display:block;overflow-y:auto;padding:16px;background:linear-gradient(0deg,rgba(4,6,13,.85) 50%,rgba(4,6,13,0) 75%)}
+  #menu,#shop{display:block;overflow-y:auto;padding:16px;background:linear-gradient(0deg,rgba(4,6,13,.85) 50%,rgba(4,6,13,0) 75%);pointer-events:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
   .brand h1{font-size:48px}
   .brand p{display:none}
   .col{max-height:none;overflow:visible;margin-top:28vh;padding-bottom:24px}
@@ -475,6 +487,7 @@ body.touch #count{top:36%}
 <body>
 
 
+<div id="rotate"><div class="ph"></div><b data-i="rotTitle"></b><small data-i="rotSub"></small></div>
 <canvas id="game"></canvas>
 
 <div id="menu" class="ov">
@@ -709,7 +722,7 @@ ja:{label:'日本語',title:'トンボ大戦',
  note:'体当たりのダメージは「ぶつかる速さ × パワー」。背後から当てると奇襲ボーナス。茂み・葦・木の葉・川の中・トンネルに入ると敵から見えなくなる。撃墜されると約100か所の出撃地点からランダムに再出撃し、しばらく無敵（急加速・アイテム使用で解除）。1位の機体には王冠がつく。',
  sPow:'パワー',sSpd:'スピード',sAgi:'機動力',sHp:'装甲',hp:'HP',boost:'速度',
  noItem:'アイテムなし',noItemHint:'？キューブに触れると、ランダムでアイテムを入手',cloneTag:'分身',healed:'HP +{n}',fBomb:'爆撃ロケット',fLightning:'ライトニング',fLava:'溶岩',dead:'撃墜',lockHint:'画面をクリックすると操作を開始',pause:'一時停止',resume:'再開',toMenu:'メニューへ',again:'もう一度',
- activated:'発動',got:'を手に入れた',ko:'撃墜！',modeL:'対戦形式',botsL:'CPUの数',modeFfa:'個人戦',modeFfaSub:'全員が敵',modeTeam:'チーム戦',modeTeamSub:'青チーム vs 赤チーム',vs:'{n}対{n}',teamN:['青チーム','赤チーム'],teamWin:'{t}の勝ち！',teamLose:'{t}の負け…',teamDraw:'引き分け',ally:'味方',teamScore:'チーム撃墜数',fRam:'体当たり',koYou:'{n} を撃墜！',koCount:'あなたの撃墜数 {n}',koBy:'{n} に撃墜された',respawning:'復活中',killerTag:'あなたを撃墜',spawnTag:'{n} 復活まで{s}',ambush:'奇襲！',ambushSub:'ダメージ ×1.5',ambushed:'背後から奇襲された',stageSub:'{m}分間で撃墜数を競え',muteOn:'ミュート',muteOff:'サウンドON',
+ activated:'発動',got:'を手に入れた',ko:'撃墜！',rotTitle:'スマホを横向きにしてください',rotSub:'トンボ大戦は横画面のゲームです。\n画面が回らないときは「画面の向きのロック」をオフにしてください。',sndHint:'画面をタップするとサウンドが鳴ります',modeL:'対戦形式',botsL:'CPUの数',modeFfa:'個人戦',modeFfaSub:'全員が敵',modeTeam:'チーム戦',modeTeamSub:'青チーム vs 赤チーム',vs:'{n}対{n}',teamN:['青チーム','赤チーム'],teamWin:'{t}の勝ち！',teamLose:'{t}の負け…',teamDraw:'引き分け',ally:'味方',teamScore:'チーム撃墜数',fRam:'体当たり',koYou:'{n} を撃墜！',koCount:'あなたの撃墜数 {n}',koBy:'{n} に撃墜された',respawning:'復活中',killerTag:'あなたを撃墜',spawnTag:'{n} 復活まで{s}',ambush:'奇襲！',ambushSub:'ダメージ ×1.5',ambushed:'背後から奇襲された',stageSub:'{m}分間で撃墜数を競え',muteOn:'ミュート',muteOff:'サウンドON',
  fAmbush:'奇襲',fSnipe:'ミサイル',missileWarn:'ミサイル接近！',fCrash:'墜落',fRecoil:'自爆',
  respawnIn:'再出撃まで {s} 秒',respawnAt:'出撃地点：{area}・高度 {h}m（マップの◆）',area:'{d}エリア',
  areas:{N:'北',NE:'北東',E:'東',SE:'南東',S:'南',SW:'南西',W:'西',NW:'北西',C:'中央'},
@@ -729,7 +742,7 @@ en:{label:'English',title:'Dragonfly Wars',
  note:'Ram damage = impact speed × power. Hit from behind for an ambush bonus. Inside bushes, reeds, treetops, rivers and tunnels you are hidden from enemies. After a KO you respawn at one of about 100 random spawn points and stay invincible for a moment (dashing or using an item ends it). The leader wears a crown.',
  sPow:'Power',sSpd:'Speed',sAgi:'Agility',sHp:'Armor',hp:'HP',boost:'SPEED',
  noItem:'No item',noItemHint:'Touch a ? cube for a random item',cloneTag:'Clone',healed:'HP +{n}',fBomb:'Blast Rocket',fLightning:'Lightning',fLava:'Lava',dead:'SHOT DOWN',lockHint:'Click the screen to take control',pause:'PAUSED',resume:'Resume',toMenu:'Menu',again:'Play again',
- activated:'activated',got:'acquired',ko:'KO!',modeL:'Mode',botsL:'CPUs',modeFfa:'Free-for-all',modeFfaSub:'Everyone is an enemy',modeTeam:'Team battle',modeTeamSub:'Blue team vs Red team',vs:'{n} vs {n}',teamN:['Blue team','Red team'],teamWin:'{t} wins!',teamLose:'{t} lost…',teamDraw:'Draw',ally:'ALLY',teamScore:'Team KOs',fRam:'Ram',koYou:'You shot down {n}!',koCount:'Your KOs: {n}',koBy:'Shot down by {n}',respawning:'Respawning',killerTag:'Shot you down',spawnTag:'{n} back in {s}',ambush:'AMBUSH!',ambushSub:'Damage ×1.5',ambushed:'Ambushed from behind',stageSub:'Most KOs in {m} min wins',muteOn:'Muted',muteOff:'Sound on',
+ activated:'activated',got:'acquired',ko:'KO!',rotTitle:'Please turn your phone sideways',rotSub:'Dragonfly Wars is played in landscape.\nIf the screen does not rotate, turn off rotation lock.',sndHint:'Tap the screen to turn on sound',modeL:'Mode',botsL:'CPUs',modeFfa:'Free-for-all',modeFfaSub:'Everyone is an enemy',modeTeam:'Team battle',modeTeamSub:'Blue team vs Red team',vs:'{n} vs {n}',teamN:['Blue team','Red team'],teamWin:'{t} wins!',teamLose:'{t} lost…',teamDraw:'Draw',ally:'ALLY',teamScore:'Team KOs',fRam:'Ram',koYou:'You shot down {n}!',koCount:'Your KOs: {n}',koBy:'Shot down by {n}',respawning:'Respawning',killerTag:'Shot you down',spawnTag:'{n} back in {s}',ambush:'AMBUSH!',ambushSub:'Damage ×1.5',ambushed:'Ambushed from behind',stageSub:'Most KOs in {m} min wins',muteOn:'Muted',muteOff:'Sound on',
  fAmbush:'Ambush',fSnipe:'Missile',missileWarn:'INCOMING MISSILE!',fCrash:'Crash',fRecoil:'Recoil',
  respawnIn:'Respawn in {s}s',respawnAt:'Spawn point: {area} · {h}m up (◆ on the map)',area:'{d}',
  areas:{N:'North',NE:'Northeast',E:'East',SE:'Southeast',S:'South',SW:'Southwest',W:'West',NW:'Northwest',C:'Center'},
@@ -749,7 +762,7 @@ zh:{label:'中文',title:'蜻蜓大战',
  note:'撞击伤害＝撞击速度×力量。从背后命中有偷袭加成。进入草丛、芦苇、树冠、河中或隧道即可躲避敌人视线。被击落后会在约100个出生点中随机复活，并短暂无敌（急加速或使用道具即解除）。第一名头顶王冠。',
  sPow:'力量',sSpd:'速度',sAgi:'机动',sHp:'装甲',hp:'HP',boost:'速度',
  noItem:'无道具',noItemHint:'触碰？方块随机获得道具',cloneTag:'分身',healed:'HP +{n}',fBomb:'爆破火箭',fLightning:'闪电',fLava:'熔岩',dead:'被击落',lockHint:'点击画面开始操作',pause:'暂停',resume:'继续',toMenu:'返回菜单',again:'再来一局',
- activated:'发动',got:'获得',ko:'击落！',modeL:'对战形式',botsL:'电脑数量',modeFfa:'个人战',modeFfaSub:'所有人都是敌人',modeTeam:'团队战',modeTeamSub:'蓝队 vs 红队',vs:'{n}对{n}',teamN:['蓝队','红队'],teamWin:'{t}获胜！',teamLose:'{t}落败…',teamDraw:'平局',ally:'队友',teamScore:'团队击落数',fRam:'撞击',koYou:'击落了 {n}！',koCount:'你的击落数 {n}',koBy:'被 {n} 击落',respawning:'复活中',killerTag:'击落了你',spawnTag:'{n} {s}秒后复活',ambush:'偷袭！',ambushSub:'伤害 ×1.5',ambushed:'被从背后偷袭',stageSub:'{m}分钟内比拼击落数',muteOn:'静音',muteOff:'声音开启',
+ activated:'发动',got:'获得',ko:'击落！',rotTitle:'请将手机横过来',rotSub:'本游戏为横屏游戏。\n如果屏幕不旋转，请关闭屏幕方向锁定。',sndHint:'点击屏幕开启声音',modeL:'对战形式',botsL:'电脑数量',modeFfa:'个人战',modeFfaSub:'所有人都是敌人',modeTeam:'团队战',modeTeamSub:'蓝队 vs 红队',vs:'{n}对{n}',teamN:['蓝队','红队'],teamWin:'{t}获胜！',teamLose:'{t}落败…',teamDraw:'平局',ally:'队友',teamScore:'团队击落数',fRam:'撞击',koYou:'击落了 {n}！',koCount:'你的击落数 {n}',koBy:'被 {n} 击落',respawning:'复活中',killerTag:'击落了你',spawnTag:'{n} {s}秒后复活',ambush:'偷袭！',ambushSub:'伤害 ×1.5',ambushed:'被从背后偷袭',stageSub:'{m}分钟内比拼击落数',muteOn:'静音',muteOff:'声音开启',
  fAmbush:'偷袭',fSnipe:'导弹',missileWarn:'导弹来袭！',fCrash:'坠毁',fRecoil:'反冲',
  respawnIn:'{s}秒后复活',respawnAt:'出生点：{area}・高度 {h}m（地图上的◆）',area:'{d}区域',
  areas:{N:'北',NE:'东北',E:'东',SE:'东南',S:'南',SW:'西南',W:'西',NW:'西北',C:'中央'},
@@ -769,7 +782,7 @@ ko:{label:'한국어',title:'잠자리 대전',
  note:'몸통 박치기 대미지 = 충돌 속도 × 파워. 뒤에서 맞히면 기습 보너스. 덤불·갈대·나뭇잎·강 속·터널에 들어가면 적에게 보이지 않는다. 격추되면 약 100곳의 출격 지점 중 무작위로 부활하며 잠시 무적(급가속·아이템 사용 시 해제). 1위 기체에는 왕관이 붙는다.',
  sPow:'파워',sSpd:'스피드',sAgi:'기동력',sHp:'장갑',hp:'HP',boost:'속도',
  noItem:'아이템 없음',noItemHint:'？ 큐브에 닿으면 랜덤 아이템 획득',cloneTag:'분신',healed:'HP +{n}',fBomb:'폭격 로켓',fLightning:'라이트닝',fLava:'용암',dead:'격추',lockHint:'화면을 클릭하면 조작 시작',pause:'일시정지',resume:'재개',toMenu:'메뉴로',again:'한 번 더',
- activated:'발동',got:'획득',ko:'격추!',modeL:'대전 방식',botsL:'CPU 수',modeFfa:'개인전',modeFfaSub:'모두가 적',modeTeam:'팀전',modeTeamSub:'블루 팀 vs 레드 팀',vs:'{n}대{n}',teamN:['블루 팀','레드 팀'],teamWin:'{t} 승리!',teamLose:'{t} 패배…',teamDraw:'무승부',ally:'아군',teamScore:'팀 격추 수',fRam:'몸통 박치기',koYou:'{n} 격추!',koCount:'내 격추 수 {n}',koBy:'{n} 에게 격추당했다',respawning:'부활 중',killerTag:'나를 격추',spawnTag:'{n} {s}초 후 부활',ambush:'기습!',ambushSub:'대미지 ×1.5',ambushed:'뒤에서 기습당했다',stageSub:'{m}분 동안 격추 수를 겨뤄라',muteOn:'음소거',muteOff:'사운드 켜짐',
+ activated:'발동',got:'획득',ko:'격추!',rotTitle:'휴대폰을 가로로 돌려 주세요',rotSub:'이 게임은 가로 화면 게임입니다.\n화면이 돌아가지 않으면 화면 방향 잠금을 꺼 주세요.',sndHint:'화면을 탭하면 사운드가 켜집니다',modeL:'대전 방식',botsL:'CPU 수',modeFfa:'개인전',modeFfaSub:'모두가 적',modeTeam:'팀전',modeTeamSub:'블루 팀 vs 레드 팀',vs:'{n}대{n}',teamN:['블루 팀','레드 팀'],teamWin:'{t} 승리!',teamLose:'{t} 패배…',teamDraw:'무승부',ally:'아군',teamScore:'팀 격추 수',fRam:'몸통 박치기',koYou:'{n} 격추!',koCount:'내 격추 수 {n}',koBy:'{n} 에게 격추당했다',respawning:'부활 중',killerTag:'나를 격추',spawnTag:'{n} {s}초 후 부활',ambush:'기습!',ambushSub:'대미지 ×1.5',ambushed:'뒤에서 기습당했다',stageSub:'{m}분 동안 격추 수를 겨뤄라',muteOn:'음소거',muteOff:'사운드 켜짐',
  fAmbush:'기습',fSnipe:'미사일',missileWarn:'미사일 접근!',fCrash:'추락',fRecoil:'반동',
  respawnIn:'{s}초 후 재출격',respawnAt:'출격 지점: {area} · 고도 {h}m (지도의 ◆)',area:'{d} 구역',
  areas:{N:'북',NE:'북동',E:'동',SE:'남동',S:'남',SW:'남서',W:'서',NW:'북서',C:'중앙'},
@@ -4424,8 +4437,16 @@ const MenuBGM=(()=>{
 })();
 // browsers only allow sound after the first tap or key press
 const calmScreens=()=>state==='menu'||state==='shop'||state==='result';
-addEventListener('pointerdown',()=>{if(!calmScreens())return;audioInit();if(!MenuBGM.playing)MenuBGM.start()},true);
-addEventListener('keydown',()=>{if(!calmScreens())return;audioInit();if(!MenuBGM.playing)MenuBGM.start()},true);
+// iPhone/iPad only unlock audio on a finished tap (touchend/click), not when the finger first touches, so listen to all of them
+let triedLock=false;
+function lockLandscape(){if(triedLock||!TOUCH)return;triedLock=true;const el=document.documentElement;
+  try{if(screen.orientation&&screen.orientation.lock&&el.requestFullscreen)el.requestFullscreen({navigationUI:'hide'}).then(()=>screen.orientation.lock('landscape')).catch(()=>{})}catch(e){}}
+function unlockAudio(e){if(e&&(e.type==='click'||e.type==='touchend'))lockLandscape();audioInit();if(AC&&AC.state!=='running'){try{AC.resume()}catch(e){}}if(calmScreens()&&!MenuBGM.playing)MenuBGM.start();soundHint()}
+for(const ev of['pointerdown','pointerup','touchend','click','keydown'])addEventListener(ev,unlockAudio,true);
+// small "tap for sound" note on the menu until the browser lets sound play
+addEventListener('resize',()=>{if(TOUCH&&innerHeight>innerWidth&&state==='play'&&!online&&typeof pauseGame==='function')pauseGame()});
+function soundHint(){const h=document.getElementById('sndHint');if(!h)return;const tx='🔊 '+t('sndHint');if(h.textContent!==tx)h.textContent=tx;h.hidden=!(calmScreens()&&cfg.bgm!=='off'&&!muted&&!(AC&&AC.state==='running'))}
+{const h=document.createElement('div');h.id='sndHint';h.textContent='🔊 '+t('sndHint');document.body.appendChild(h);soundHint();setInterval(soundHint,600)}
 
 /* ================= main loop ================= */
 let last=performance.now();
